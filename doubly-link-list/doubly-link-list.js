@@ -146,8 +146,7 @@ class DoublyLinkList {
             this.length--;
             return currentNode;
         };    
-    }
-};
+    };
 
 let mylist = new DoublyLinkList;
 mylist.push(50);
