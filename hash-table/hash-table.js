@@ -1,0 +1,11 @@
+const simpleHash = function(key, arrLen) {
+    let total = 0;
+    for (let char of key) {
+        let value = key.charCodeAt(0) - 96;
+        total = (total + value) % arrLen;
+    };
+    return total;
+}
+
+const blue = simpleHash('rerererer', 10);
+console.log(blue);
