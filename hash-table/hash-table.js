@@ -1,11 +1,16 @@
-const simpleHash = function(key, arrLen) {
-    let total = 0;
-    for (let char of key) {
-        let value = key.charCodeAt(0) - 96;
-        total = (total + value) % arrLen;
-    };
-    return total;
-}
+class HashTable {
+    constructor(size=53) {
+        this.keyMap = new Array(size);
+    }
 
-const blue = simpleHash('rerererer', 10);
-console.log(blue);
+    _hash(key) {
+        let total = 0;
+        let WEIRD_PRIME = 31;
+        for (let i = 0; i < Math.min(key.length, 100); i++) {
+            let char = key[i];
+            let value = char.charCodeAt(0) - 96;
+            total = (total * WEIRD_PRIME + value) % this.keyMap.length;
+        };
+        return total;
+    }
+}
