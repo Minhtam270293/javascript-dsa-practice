@@ -13,4 +13,56 @@ class HashTable {
         };
         return total;
     }
+
+    set(key, value) {
+        const index = this._hash(key);
+
+        this.keyMap[index] = this.keyMap[index] ? 
+        [...this.keyMap[index], [key,value]] : [[key,value]]
+    }
+
+    get(key) {
+        const index = this._hash(key);
+        for (let pair of this.keyMap[index]) {
+            if (pair[0] === key) return pair[1] 
+        }
+
+        return undefined;
+    }
+
+    keys() {
+        let keyArr = [];
+        for (let i = 0; i < this.keyMap.length; i++) {
+            if(this.keyMap[i]) {
+                for (let pair of this.keyMap[i]) {
+                    keyArr.push(pair[0])
+                }
+            }
+        }
+        return keyArr
+    }
+
+    allValues() {
+        let valArr = [];
+        for (let i = 0; i < this.keyMap.length; i++) {
+            if(this.keyMap[i]) {
+                for (let pair of this.keyMap[i]) {
+                    if (!valArr.includes(pair[1]))
+                    valArr.push(pair[1])
+                }
+            }
+        }
+        return valArr
+    }
+
 }
+
+const myTable = new HashTable(23);
+myTable.set('green','#F888AB');
+myTable.set('black','sdfB');
+myTable.set('pink','#fffff');
+myTable.set('dupPink','#fffff');
+myTable.set('pinkagain','#fffff');
+console.log(myTable.keyMap);
+console.log(myTable.keys());
+console.log(myTable.allValues());
