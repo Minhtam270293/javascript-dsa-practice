@@ -33,7 +33,7 @@ class Graph {
         delete this.adjacencyList[vertex]
     }
 
-    DFS(startNode) {
+    DFSRecursive(startNode) {
         let result = [];
         let visited = {};
         
@@ -48,6 +48,48 @@ class Graph {
             })
         }
         traverse(this, startNode);
+        return result
+    }
+
+    DFSIterative(vertex) {
+        let result = [];
+        let stack = [vertex];
+        let visited = {};
+        let popVertex;
+        
+        while (stack.length > 0) {
+            popVertex = stack.pop();
+            if (!visited[popVertex])
+            {result.push(popVertex);
+            visited[popVertex] = true;
+
+            for (let i = 0; i < this.adjacencyList[popVertex].length; i++) {
+                let adjVertex = this.adjacencyList[popVertex][i];
+                if(!visited[adjVertex]) stack.push(adjVertex)
+                }
+            }
+        }
+
+        return result
+    }
+
+    BFS(vertex) {
+        let queue = [vertex];
+        let result = [];
+        let visited = {};
+        let popVertex;
+
+        while(queue.length > 0) {
+            popVertex = queue.pop();
+            if (!visited[popVertex]) {
+                result.push(popVertex);
+                visited[popVertex] = true;
+            }
+
+            this.adjacencyList[popVertex].forEach(adjVertex => {
+                if(!visited[adjVertex]) queue.unshift(adjVertex)
+            })
+        }
         return result
     }
 }
@@ -69,4 +111,4 @@ g.addEdge('D', 'E');
 g.addEdge('D', 'F');
 g.addEdge('E', 'F');
 
-console.log(g.DFS('B'));
+console.log(g.BFS('A'));
