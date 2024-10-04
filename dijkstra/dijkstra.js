@@ -33,15 +33,12 @@ class WeightedGraph {
 
     findShortestPath (start, dest) {
 
-        // Create a distance object
-        // Add all vertices and set to infinity, except for start, set 0
-        // Create a priority queue:
-        // Add vertex and distance to that
-        // Create a previous object
-        // Add all vertices and set to null
         let distanceObj = {};
         let queue = new PriorityQueue();
         let previous = {};
+        let popItem;
+        let popVertex;
+        let path = [];
         const vertices = Object.keys(this.adjacencyList);
 
         vertices.forEach(vertex => {
@@ -51,13 +48,21 @@ class WeightedGraph {
             previous[vertex] = null;
         });
 
-        while (Object.keys(queue).length > 0) {
-            let popItem = queue.dequeue();
-            let popVertex = popItem['val'];
+        while (queue.values.length > 0) {
+            popItem = queue.dequeue();
+            popVertex = popItem['val'];
 
-            if(popVertex === dest) return distanceObj;
+            if(popVertex === dest) {
 
-            this.adjacencyList[popVertex].forEach(adjVertex => {
+                while(previous[popVertex]) {
+                    path.push(popVertex);
+                    popVertex = previous[popVertex];
+                }
+                break;
+            };
+
+            if(popVertex ||  distanceObj[popVertex] !== Infinity) {            
+                this.adjacencyList[popVertex].forEach(adjVertex => {
 
                 let distance = adjVertex['weight'] + distanceObj[popVertex];
 
@@ -66,10 +71,9 @@ class WeightedGraph {
                     previous[adjVertex['node']] = popVertex;
                     queue.enqueue(adjVertex['node'], distance)
                 }
-
-            })
+            })}
         }
-
+        return path.concat(popVertex).reverse();
         
         }
 }
