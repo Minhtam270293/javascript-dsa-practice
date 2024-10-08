@@ -1,69 +1,78 @@
+class Node {
+    constructor(value, priority) {
+        this.value = value;
+        this.priority = priority
+    }
+};
 
-class maxBinaryHeap {
+class PriorityQueue {
     constructor() {
         this.values = []
     };
 
-    insert(element) {
-        this.values.push(element);
+    enqueue(value, priority) {
+        const newNode = new Node(value, priority);
+        this.values.push(newNode);
         if (this.values.length === 1) return this.values;
-        
         this.bubbleUp();
-        return this.values;
     };
 
     bubbleUp() {
         let currentIndex = this.values.length - 1; 
+        const newEle = this.values[currentIndex];
        
         while(currentIndex > 0) {
-            let parentIndex = Math.floor((currentIndex - 1)/2);
             
-            if (this.values[currentIndex] > this.values[parentIndex]) 
+            let parentIndex = Math.floor((currentIndex - 1)/2);
+            let parentNode = this.values[parentIndex];
+            
+            if (newEle.priority < parentNode.priority) 
             [this.values[currentIndex], this.values[parentIndex]] = 
             [this.values[parentIndex], this.values[currentIndex]]
             else break;
         
             currentIndex = parentIndex;
+
         }
     };
     
-    remove () {
+    dequeue () {
         if (this.values.length === 0) return undefined;
 
-        const root = this.values[0];
-        const end = this.values.pop();
+        const rootNode = this.values[0];
+        const endNode = this.values.pop();
         
-        if (this.values.length === 0) return root;
-        this.values[0] = end;
+        if (this.values.length === 0) return rootNode;
+        this.values[0] = endNode;
 
         this.sinkDown();
-        return root;
+        return rootNode;
     };
 
     sinkDown() {
         let currentIndex = 0;
         const length = this.values.length;
-        const element = this.values[0];
+        const elePriority = this.values[0].priority;
         
             while (true) {
            
             let leftIndex = currentIndex*2 + 1;
             let rightIndex = currentIndex*2 + 2;
-            let leftChild, rightChild;
+            let leftChildPriority, rightChildPriority;
             let swapIndex = null; 
 
             if (leftIndex < length) {
-                leftChild = this.values[leftIndex];
-                if (element < leftChild) {
+                leftChildPriority = this.values[leftIndex].priority;
+                if (elePriority > leftChildPriority) {
                     swapIndex = leftIndex;
                 }
             };
 
             if (rightIndex < length) {
-                rightChild = this.values[rightIndex];
+                rightChildPriority = this.values[rightIndex].priority;
 
-                if((swapIndex !== null && rightChild > leftChild) ||
-                   (swapIndex === null && rightChild > element))
+                if((swapIndex !== null && rightChildPriority < leftChildPriority) ||
+                   (swapIndex === null && rightChildPriority < elePriority))
                     swapIndex = rightIndex;
             };
 
@@ -108,7 +117,7 @@ class WeightedGraph {
 
         while (queue.values.length > 0) {
             popItem = queue.dequeue();
-            popVertex = popItem['val'];
+            popVertex = popItem['value'];
 
             if(popVertex === dest) {
 
