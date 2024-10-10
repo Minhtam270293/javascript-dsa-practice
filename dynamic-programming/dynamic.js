@@ -5,7 +5,7 @@ const recurFib = function(n) {
     return recurFib(n - 2) + recurFib(n - 1);
 }
 
-// Dynamic fibonacci
+// Memoization fibonacci
 
 const memoFib = function(n, memo=[]) {
     if (memo[n] !== undefined) return memo[n];
@@ -31,4 +31,15 @@ const alterFib = function(n) {
     return helper(n);
 }
 
-console.log(alterFib(40));
+// Tabulation fibonacci
+
+const tabFib = function(n) {
+    if (n <=2 ) return 1;
+    let fibNums = [0,1,1];
+    for (let i = 3; i <= n; i++) {
+        fibNums[i] = fibNums[i-1] + fibNums[i-2];
+    }
+    return fibNums[n];
+}
+
+console.log(tabFib(45));
